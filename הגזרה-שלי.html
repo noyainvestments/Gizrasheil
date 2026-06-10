@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>הגזרה שלי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --rose:#E8527A;--rose-d:#C23B6B;--rose-light:#FDEEF3;--rose-mid:#F4A0B8;
+  --teal:#2ABBA4;--teal-d:#1E9A8A;--teal-light:#E6F7F5;
+  --amber:#F59E2A;--amber-d:#C4780F;--amber-light:#FEF5E7;
+  --purple:#7C5CBF;--purple-light:#F0EBFA;
+  --green:#27AE82;--green-d:#1E8F6A;--green-light:#E8F8F2;
+  --red:#E84040;--red-light:#FDECEC;
+  --text:#1A202C;--text2:#718096;--text3:#A0AEC0;
+  --bg:#F7F8FA;--white:#FFFFFF;--border:#E2E8F0;
+  --shadow:0 2px 12px rgba(0,0,0,0.08);
+  --radius:14px;--radius-sm:10px;
+  --peach:#FCEEE6;--peach-d:#C96A3A;--peach-border:#F5CDB8;
+  --lavender:#F0EDF8;--lavender-d:#6A5A9F;--lavender-border:#D4C8EE;
+  --cream:#FAF6EE;--cream-d:#8A7040;--cream-border:#E8D9BE;
+}
+html,body{height:100%;font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.5;}
+.app{max-width:680px;margin:0 auto;padding:0 0 80px;}
+.topbar{background:linear-gradient(135deg,#C97BA0 0%,#9B5880 100%);padding:20px 20px 16px;position:sticky;top:0;z-index:100;}
+.topbar-inner{display:flex;align-items:center;gap:12px;}
+.topbar-icon{width:46px;height:46px;background:rgba(255,255,255,0.22);border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;}
+.topbar-title{font-size:20px;font-weight:600;color:#fff;}
+.topbar-sub{font-size:12px;color:rgba(255,255,255,0.72);margin-top:1px;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom);}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;border:none;background:none;cursor:pointer;color:var(--text3);font-family:'Heebo',sans-serif;transition:color 0.15s;gap:3px;font-size:20px;}
+.nav-btn span{font-size:11px;font-weight:500;}
+.nav-btn.active{color:#9B5880;}
+.panel{display:none;padding:16px;}
+.panel.active{display:block;}
+#panel-new{background:var(--peach);}
+#panel-new .card{border-color:var(--peach-border);}
+#panel-new .card-title{color:var(--peach-d);}
+#panel-new .field input:focus,#panel-new .field select:focus,#panel-new .field textarea:focus{border-color:var(--peach-d);}
+#panel-new .btn-rose{background:linear-gradient(135deg,#E8845A,var(--peach-d));box-shadow:0 4px 12px rgba(200,100,60,0.25);}
+#panel-new .btn-add-mat:hover{border-color:var(--peach-d);color:var(--peach-d);}
+#panel-jobs{background:var(--lavender);}
+#panel-jobs .card{border-color:var(--lavender-border);}
+#panel-jobs .job-card{border-color:var(--lavender-border);}
+#panel-jobs .seg-btn.active{color:var(--lavender-d);}
+#panel-summary{background:var(--cream);}
+#panel-summary .card{border-color:var(--cream-border);}
+#panel-summary .period-btn.active{background:var(--cream-d);box-shadow:0 2px 8px rgba(138,112,64,0.2);}
+#panel-summary .bar-fill{background:linear-gradient(90deg,var(--cream-d),#C4A86A);}
+#panel-clients{background:#EEF4FB;}
+#panel-clients .card{border-color:#C8DCF0;}
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);}
+.card-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:0;}
+.field label{font-size:12px;font-weight:500;color:var(--text2);}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:#fff;color:var(--text);font-size:15px;font-family:'Heebo',sans-serif;transition:border-color 0.15s;outline:none;appearance:none;-webkit-appearance:none;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--rose);}
+.field textarea{resize:vertical;min-height:72px;}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23718096' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 12px center;padding-left:32px;}
+.form-grid{display:grid;gap:10px;margin-bottom:10px;}
+.g2{grid-template-columns:1fr 1fr;}
+.g3{grid-template-columns:1fr 1fr 1fr;}
+@media(max-width:400px){.g3{grid-template-columns:1fr 1fr;}.g3 .field:last-child{grid-column:span 2;}}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;border-radius:var(--radius-sm);font-size:15px;font-weight:500;cursor:pointer;border:none;font-family:'Heebo',sans-serif;transition:all 0.15s;user-select:none;}
+.btn:active{transform:scale(0.96);}
+.btn-rose{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;box-shadow:0 4px 12px rgba(232,82,122,0.3);}
+.btn-teal{background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;box-shadow:0 3px 10px rgba(42,187,164,0.25);}
+.btn-green{background:linear-gradient(135deg,var(--green),var(--green-d));color:#fff;box-shadow:0 3px 10px rgba(39,174,130,0.25);}
+.btn-purple{background:linear-gradient(135deg,#9B6FD0,var(--purple));color:#fff;box-shadow:0 3px 10px rgba(124,92,191,0.25);}
+.btn-sm{padding:7px 14px;font-size:13px;border-radius:9px;}
+.btn-del{background:var(--red-light);color:var(--red);border:none;padding:7px 10px;font-size:13px;border-radius:9px;cursor:pointer;font-family:'Heebo',sans-serif;}
+.btn-del:active{transform:scale(0.95);}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text2);padding:9px 16px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;font-family:'Heebo',sans-serif;transition:all 0.15s;}
+.btn-outline:hover{border-color:var(--text2);color:var(--text);}
+.metrics{display:grid;gap:10px;margin-bottom:12px;}
+.m2{grid-template-columns:1fr 1fr;}
+.m3{grid-template-columns:1fr 1fr 1fr;}
+@media(max-width:400px){.m3{grid-template-columns:1fr 1fr;}.m3 .metric:last-child{grid-column:span 2;}}
+.metric{border-radius:13px;padding:14px 16px;}
+.metric.rose{background:var(--rose-light);}
+.metric.teal{background:var(--teal-light);}
+.metric.amber{background:var(--amber-light);}
+.metric.purple{background:var(--purple-light);}
+.metric.green{background:var(--green-light);}
+.metric.blue{background:#EBF4FF;}
+.metric-lbl{font-size:11px;font-weight:500;margin-bottom:4px;}
+.metric.rose .metric-lbl{color:var(--rose);}
+.metric.teal .metric-lbl{color:var(--teal-d);}
+.metric.amber .metric-lbl{color:var(--amber-d);}
+.metric.purple .metric-lbl{color:var(--purple);}
+.metric.green .metric-lbl{color:var(--green-d);}
+.metric.blue .metric-lbl{color:#2B7BC8;}
+.metric-val{font-size:26px;font-weight:600;line-height:1.1;}
+.metric.rose .metric-val{color:var(--rose-d);}
+.metric.teal .metric-val{color:var(--teal-d);}
+.metric.amber .metric-val{color:var(--amber-d);}
+.metric.purple .metric-val{color:var(--purple);}
+.metric.green .metric-val{color:var(--green-d);}
+.metric.blue .metric-val{color:#1A5FA8;}
+.period-row{display:flex;background:#fff;border:1px solid var(--border);border-radius:12px;padding:4px;margin-bottom:14px;gap:4px;}
+.period-btn{flex:1;padding:8px 4px;font-size:13px;font-weight:500;border:none;background:none;color:var(--text2);border-radius:9px;cursor:pointer;font-family:'Heebo',sans-serif;transition:all 0.15s;}
+.period-btn.active{background:var(--rose);color:#fff;box-shadow:0 2px 8px rgba(232,82,122,0.3);}
+.seg{display:flex;background:var(--bg);border-radius:10px;padding:3px;gap:3px;}
+.seg-btn{flex:1;padding:6px 8px;font-size:12px;font-weight:500;border:none;background:none;color:var(--text2);border-radius:8px;cursor:pointer;font-family:'Heebo',sans-serif;transition:all 0.15s;text-align:center;}
+.seg-btn.active{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+.jobs-wrap{display:flex;flex-direction:column;gap:8px;}
+.job-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:box-shadow 0.15s;}
+.job-card.is-open{border-right:4px solid var(--amber);}
+.job-card.is-bit{border-right:4px solid var(--teal);}
+.job-card.is-cash{border-right:4px solid var(--green);}
+.job-top{display:flex;align-items:flex-start;gap:10px;padding:13px 14px;}
+.job-info{flex:1;min-width:0;}
+.job-client{font-weight:600;font-size:15px;color:var(--text);}
+.job-desc{font-size:12px;color:var(--text2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.job-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.job-price{font-size:16px;font-weight:600;color:var(--text);}
+.job-profit{font-size:11px;}
+.job-profit.pos{color:var(--green-d);}
+.job-profit.neg{color:var(--red);}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;}
+.badge-open{background:var(--amber-light);color:var(--amber-d);}
+.badge-bit{background:var(--teal-light);color:var(--teal-d);}
+.badge-cash{background:var(--green-light);color:var(--green-d);}
+.badge-returning{background:var(--purple-light);color:var(--purple);font-size:11px;padding:2px 8px;border-radius:20px;}
+.job-actions{display:flex;gap:6px;align-items:center;padding:0 14px 13px;justify-content:flex-end;}
+.pay-drawer{background:var(--amber-light);border-top:1px solid #F7DDA0;padding:12px 14px;display:none;align-items:center;gap:8px;flex-wrap:wrap;}
+.pay-drawer.open{display:flex;}
+.pay-drawer-label{font-size:12px;font-weight:500;color:var(--amber-d);}
+.mat-block{border-top:1px solid var(--border);padding-top:13px;margin-top:4px;}
+.mat-row{display:grid;grid-template-columns:1fr 80px 36px;gap:8px;align-items:center;margin-bottom:8px;}
+.mat-row input{padding:9px 11px;font-size:14px;border:1.5px solid var(--border);border-radius:9px;background:#fff;color:var(--text);font-family:'Heebo',sans-serif;outline:none;width:100%;}
+.mat-row input:focus{border-color:var(--rose);}
+.btn-rm{width:36px;height:36px;background:var(--red-light);border:none;border-radius:9px;color:var(--red);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.btn-rm:active{transform:scale(0.9);}
+.btn-add-mat{display:flex;align-items:center;gap:6px;background:none;border:1.5px dashed var(--border);border-radius:9px;padding:8px 14px;font-size:13px;color:var(--text2);cursor:pointer;font-family:'Heebo',sans-serif;transition:all 0.15s;width:100%;justify-content:center;}
+.btn-add-mat:hover{border-color:var(--rose);color:var(--rose);}
+.mat-total-row{display:flex;justify-content:space-between;font-size:13px;color:var(--text2);padding:6px 0 0;border-top:1px dashed var(--border);margin-top:4px;}
+.mat-total-val{font-weight:600;color:var(--red);}
+.pay-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.pay-box{border-radius:13px;padding:14px 16px;}
+.pay-box.bit{background:var(--teal-light);}
+.pay-box.cash{background:var(--green-light);}
+.pay-box-label{font-size:11px;font-weight:500;display:flex;align-items:center;gap:4px;margin-bottom:6px;}
+.pay-box.bit .pay-box-label{color:var(--teal-d);}
+.pay-box.cash .pay-box-label{color:var(--green-d);}
+.pay-box-amt{font-size:22px;font-weight:600;}
+.pay-box.bit .pay-box-amt{color:var(--teal-d);}
+.pay-box.cash .pay-box-amt{color:var(--green-d);}
+.pay-box-pct{font-size:11px;color:var(--text3);margin-top:2px;}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.bar-lbl{font-size:12px;color:var(--text2);width:68px;text-align:right;flex-shrink:0;}
+.bar-track{flex:1;background:var(--bg);border-radius:6px;height:22px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--rose),var(--rose-mid));transition:width 0.5s ease;}
+.bar-num{font-size:12px;color:var(--text2);width:64px;flex-shrink:0;text-align:left;}
+.empty{text-align:center;padding:3rem 1rem;color:var(--text3);}
+.empty p{font-size:14px;margin-top:8px;}
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:#fff;padding:11px 22px;border-radius:12px;font-size:14px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,0.2);opacity:0;transition:all 0.25s;z-index:999;white-space:nowrap;pointer-events:none;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.success{background:var(--green);}
+.form-footer{display:flex;justify-content:flex-start;margin-top:14px;gap:10px;flex-wrap:wrap;}
+.filter-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+/* returning client hint */
+.client-hint{background:var(--purple-light);border:1px solid #C8B8E8;border-radius:10px;padding:8px 12px;font-size:13px;color:var(--purple);margin-top:6px;display:none;}
+/* client cards */
+.client-card{background:#fff;border:1.5px solid #C8DCF0;border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:box-shadow 0.15s;}
+.client-card:hover{box-shadow:var(--shadow);}
+.client-name{font-weight:600;font-size:15px;color:var(--text);}
+.client-stats{display:flex;gap:12px;margin-top:6px;flex-wrap:wrap;}
+.client-stat{font-size:12px;color:var(--text2);}
+.client-stat strong{color:var(--text);font-weight:600;}
+.client-total{font-size:16px;font-weight:600;color:#1A5FA8;margin-top:4px;}
+/* export/import */
+.io-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-icon">✂️</div>
+      <div>
+        <div class="topbar-title">הגזרה שלי</div>
+        <div class="topbar-sub">ניהול עבודות ומעקב הכנסות</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW JOB -->
+  <div id="panel-new" class="panel active">
+    <div class="card">
+      <div class="card-title">👤 פרטי הלקוחה</div>
+      <div class="form-grid g2">
+        <div class="field">
+          <label>שם הלקוחה</label>
+          <input type="text" id="f-client" placeholder="למשל: רחל כהן" autocomplete="off" oninput="checkReturning()">
+          <div class="client-hint" id="client-hint"></div>
+        </div>
+        <div class="field"><label>סוג העבודה</label><input type="text" id="f-desc" placeholder="שמלה, תיקון..."></div>
+      </div>
+      <div class="form-grid g2">
+        <div class="field"><label>תאריך קבלה</label><input type="date" id="f-date-in"></div>
+        <div class="field"><label>תאריך מסירה</label><input type="date" id="f-date-out"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">💰 תשלום ושעות</div>
+      <div class="form-grid g3">
+        <div class="field"><label>מחיר גביה (₪)</label><input type="number" id="f-price" placeholder="0" min="0" inputmode="numeric"></div>
+        <div class="field"><label>סטטוס תשלום</label>
+          <select id="f-pay">
+            <option value="open">טרם שולם</option>
+            <option value="bit">שולם - ביט</option>
+            <option value="cash">שולם - מזומן</option>
+          </select>
+        </div>
+        <div class="field"><label>שעות עבודה</label><input type="number" id="f-hours" placeholder="0" min="0" step="0.5" inputmode="decimal"></div>
+      </div>
+      <div class="field"><label>הערות</label><textarea id="f-notes" placeholder="מידות, בקשות מיוחדות, פרטים לזכור..."></textarea></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🧵 עלויות חומרים</div>
+      <div id="materials-list"></div>
+      <button class="btn-add-mat" onclick="addMaterial()">+ הוסף חומר</button>
+      <div id="mat-total-row" class="mat-total-row" style="display:none">
+        <span>סה"כ עלות חומרים</span>
+        <span class="mat-total-val" id="mat-total-val">₪0</span>
+      </div>
+      <div class="form-footer">
+        <button class="btn btn-rose" onclick="saveJob()">💾 שמור עבודה</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOBS -->
+  <div id="panel-jobs" class="panel">
+    <div class="filter-row">
+      <span style="font-size:15px;font-weight:600;color:var(--text)">עבודות</span>
+      <div class="seg">
+        <button class="seg-btn active" onclick="setFilter('all',this)">הכל</button>
+        <button class="seg-btn" onclick="setFilter('open',this)">טרם שולם</button>
+        <button class="seg-btn" onclick="setFilter('done',this)">שולם</button>
+      </div>
+    </div>
+    <div id="jobs-list" class="jobs-wrap"></div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div id="panel-summary" class="panel">
+    <div class="period-row">
+      <button class="period-btn active" onclick="setPeriod('week',this)">שבוע זה</button>
+      <button class="period-btn" onclick="setPeriod('month',this)">חודש זה</button>
+      <button class="period-btn" onclick="setPeriod('all',this)">הכל</button>
+    </div>
+    <div class="metrics m2">
+      <div class="metric rose"><div class="metric-lbl">הכנסה</div><div class="metric-val" id="s-income">₪0</div></div>
+      <div class="metric teal"><div class="metric-lbl">עלות חומרים</div><div class="metric-val" id="s-costs">₪0</div></div>
+      <div class="metric green"><div class="metric-lbl">רווח נטו</div><div class="metric-val" id="s-profit">₪0</div></div>
+      <div class="metric amber"><div class="metric-lbl">שעות עבודה</div><div class="metric-val" id="s-hours">0</div></div>
+    </div>
+    <div class="metrics m3">
+      <div class="metric purple"><div class="metric-lbl">שכר לשעה</div><div class="metric-val" id="s-hourly">₪0</div></div>
+      <div class="metric amber"><div class="metric-lbl">טרם שולם</div><div class="metric-val" id="s-open">0</div></div>
+      <div class="metric teal"><div class="metric-lbl">הושלמו</div><div class="metric-val" id="s-done">0</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📱 אמצעי תשלום</div>
+      <div class="pay-split">
+        <div class="pay-box bit"><div class="pay-box-label">📱 ביט / העברה</div><div class="pay-box-amt" id="s-bit">₪0</div><div class="pay-box-pct" id="s-bit-pct"></div></div>
+        <div class="pay-box cash"><div class="pay-box-label">💵 מזומן</div><div class="pay-box-amt" id="s-cash">₪0</div><div class="pay-box-pct" id="s-cash-pct"></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📅 ימים עמוסים בשבוע</div>
+      <div id="days-chart" style="margin-top:6px"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">💾 גיבוי נתונים</div>
+      <div class="io-row">
+        <button class="btn btn-purple btn-sm" onclick="exportCSV()">📤 ייצא לאקסל (CSV)</button>
+        <button class="btn-outline btn-sm btn" onclick="document.getElementById('import-file').click()">📥 ייבא מקובץ</button>
+        <input type="file" id="import-file" accept=".csv,.json" style="display:none" onchange="importData(event)">
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-top:4px;">ייצא לפני החלפת מכשיר - ייבא במכשיר החדש</div>
+    </div>
+  </div>
+
+  <!-- CLIENTS -->
+  <div id="panel-clients" class="panel">
+    <div class="filter-row">
+      <span style="font-size:15px;font-weight:600;color:var(--text)">לקוחות</span>
+      <input type="text" id="client-search" placeholder="🔍 חפשי לקוחה..." style="padding:7px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'Heebo',sans-serif;width:160px;outline:none;" oninput="renderClients()">
+    </div>
+    <div id="clients-list"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-new" onclick="showTab('new',this)">➕<span>חדש</span></button>
+  <button class="nav-btn" id="nav-jobs" onclick="showTab('jobs',this)">📋<span>עבודות</span></button>
+  <button class="nav-btn" id="nav-clients" onclick="showTab('clients',this)">👥<span>לקוחות</span></button>
+  <button class="nav-btn" id="nav-summary" onclick="showTab('summary',this)">📊<span>סיכום</span></button>
+</nav>
+
+<div id="toast"></div>
+
+<script>
+const KEY='sewing_v4';
+let jobs=[],period='week',activeFilter='all',openDraw=null,matN=0;
+
+function load(){try{jobs=JSON.parse(localStorage.getItem(KEY))||[];}catch(e){jobs=[];}}
+function save(){localStorage.setItem(KEY,JSON.stringify(jobs));}
+
+function toast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='show '+(type==='success'?'success':'');
+  clearTimeout(t._timer);t._timer=setTimeout(()=>t.className='',2400);
+}
+
+function showTab(n,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+n).classList.add('active');
+  btn.classList.add('active');
+  if(n==='jobs')renderJobs();
+  if(n==='summary')renderSummary();
+  if(n==='clients')renderClients();
+}
+
+/* returning client hint */
+function checkReturning(){
+  const name=document.getElementById('f-client').value.trim().toLowerCase();
+  const hint=document.getElementById('client-hint');
+  if(!name){hint.style.display='none';return;}
+  const prev=jobs.filter(j=>j.client.toLowerCase()===name);
+  if(prev.length>0){
+    const total=prev.filter(j=>j.pay!=='open').reduce((s,j)=>s+j.price,0);
+    hint.textContent=`✨ לקוחה חוזרת! ביקור מספר ${prev.length+1} · סה"כ שילמה עד היום: ₪${total.toLocaleString()}`;
+    hint.style.display='block';
+  } else {
+    hint.style.display='none';
+  }
+}
+
+/* materials */
+function addMaterial(){
+  matN++;const id='m'+matN;
+  const d=document.createElement('div');d.className='mat-row';d.id=id;
+  d.innerHTML=`<input type="text" placeholder="שם החומר" oninput="updateMatTotal()"><input type="number" placeholder="₪" min="0" inputmode="numeric" oninput="updateMatTotal()"><button class="btn-rm" onclick="removeMat('${id}')">✕</button>`;
+  document.getElementById('materials-list').appendChild(d);updateMatTotal();
+}
+function removeMat(id){document.getElementById(id).remove();updateMatTotal();}
+function updateMatTotal(){
+  const rows=document.querySelectorAll('#materials-list .mat-row');
+  let tot=0;rows.forEach(r=>{tot+=parseFloat(r.querySelectorAll('input')[1].value)||0;});
+  const row=document.getElementById('mat-total-row');
+  if(rows.length>0){row.style.display='flex';document.getElementById('mat-total-val').textContent='₪'+tot.toLocaleString();}
+  else{row.style.display='none';}
+}
+function getMats(){
+  return [...document.querySelectorAll('#materials-list .mat-row')].map(r=>{
+    const ins=r.querySelectorAll('input');
+    return{name:ins[0].value.trim(),cost:parseFloat(ins[1].value)||0};
+  }).filter(m=>m.name||m.cost);
+}
+
+/* save job */
+function saveJob(){
+  const client=document.getElementById('f-client').value.trim();
+  if(!client){alert('נא להזין שם לקוחה');return;}
+  const price=parseFloat(document.getElementById('f-price').value)||0;
+  const pay=document.getElementById('f-pay').value;
+  const hours=parseFloat(document.getElementById('f-hours').value)||0;
+  const dateIn=document.getElementById('f-date-in').value||new Date().toISOString().slice(0,10);
+  const dateOut=document.getElementById('f-date-out').value;
+  const desc=document.getElementById('f-desc').value.trim();
+  const notes=document.getElementById('f-notes').value.trim();
+  const materials=getMats();
+  const matTotal=materials.reduce((s,m)=>s+m.cost,0);
+  /* visit number for this client */
+  const visitNum=jobs.filter(j=>j.client.toLowerCase()===client.toLowerCase()).length+1;
+  jobs.unshift({id:Date.now(),client,desc,price,pay,hours,dateIn,dateOut,notes,materials,matTotal,visitNum});
+  save();
+  ['f-client','f-desc','f-price','f-hours','f-date-out','f-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-pay').value='open';
+  document.getElementById('materials-list').innerHTML='';
+  document.getElementById('mat-total-row').style.display='none';
+  document.getElementById('client-hint').style.display='none';
+  document.getElementById('f-date-in').value=new Date().toISOString().slice(0,10);
+  toast('✓ העבודה נשמרה!');
+}
+
+/* jobs */
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');renderJobs();
+}
+function toggleDraw(id){
+  if(openDraw&&openDraw!==id){const p=document.getElementById('draw-'+openDraw);if(p)p.classList.remove('open');}
+  const el=document.getElementById('draw-'+id);
+  if(el){el.classList.toggle('open');openDraw=el.classList.contains('open')?id:null;}
+}
+function markPaid(id,method){
+  const j=jobs.find(j=>j.id===id);if(!j)return;
+  j.pay=method;if(!j.dateOut)j.dateOut=new Date().toISOString().slice(0,10);
+  save();openDraw=null;renderJobs();toast('✓ סומן כשולם!');
+}
+function deleteJob(id){
+  if(!confirm('למחוק את העבודה?'))return;
+  jobs=jobs.filter(j=>j.id!==id);save();renderJobs();
+}
+function renderJobs(){
+  let list=jobs;
+  if(activeFilter==='open')list=jobs.filter(j=>j.pay==='open');
+  if(activeFilter==='done')list=jobs.filter(j=>j.pay!=='open');
+  const el=document.getElementById('jobs-list');
+  if(!list.length){el.innerHTML='<div class="empty">🧵<p>אין עבודות להצגה</p></div>';return;}
+  el.innerHTML=list.map(j=>{
+    const profit=j.price-(j.matTotal||0);
+    const isOpen=j.pay==='open';
+    const cls=isOpen?'is-open':j.pay==='bit'?'is-bit':'is-cash';
+    const badge=isOpen?`<span class="badge badge-open">⏱ טרם שולם</span>`:j.pay==='bit'?`<span class="badge badge-bit">📱 ביט</span>`:`<span class="badge badge-cash">💵 מזומן</span>`;
+    const visitBadge=j.visitNum>1?`<span class="badge-returning">ביקור ${j.visitNum}</span>`:'';
+    const date=j.dateIn?j.dateIn.slice(5).replace('-','/'):'';
+    const hrs=j.hours?` · ${j.hours} שע'`:'';
+    const profitSign=profit>=0?'+':'';
+    const profitCls=profit>=0?'pos':'neg';
+    const descText=[date,j.desc,hrs?hrs.trim():'',j.notes?j.notes.slice(0,28):''].filter(Boolean).join(' · ');
+    return `<div class="job-card ${cls}">
+      <div class="job-top">
+        <div class="job-info">
+          <div class="job-client">${j.client} ${visitBadge}</div>
+          <div class="job-desc">${descText}</div>
+          <div style="margin-top:7px">${badge}</div>
+        </div>
+        <div class="job-right">
+          <div class="job-price">₪${j.price.toLocaleString()}</div>
+          <div class="job-profit ${profitCls}">${profitSign}₪${profit.toLocaleString()} רווח</div>
+        </div>
+      </div>
+      <div class="job-actions">
+        ${isOpen?`<button class="btn btn-sm btn-teal" onclick="toggleDraw(${j.id})">✓ סמן כשולם</button>`:''}
+        <button class="btn-del" onclick="deleteJob(${j.id})">🗑</button>
+      </div>
+      ${isOpen?`<div class="pay-drawer" id="draw-${j.id}">
+        <span class="pay-drawer-label">באיזה אמצעי שולם?</span>
+        <button class="btn btn-sm btn-teal" onclick="markPaid(${j.id},'bit')">📱 ביט</button>
+        <button class="btn btn-sm btn-green" onclick="markPaid(${j.id},'cash')">💵 מזומן</button>
+      </div>`:''}
+    </div>`;
+  }).join('');
+}
+
+/* clients */
+function renderClients(){
+  const search=(document.getElementById('client-search').value||'').trim().toLowerCase();
+  /* group by client name */
+  const map={};
+  jobs.forEach(j=>{
+    const key=j.client.trim().toLowerCase();
+    if(!map[key])map[key]={name:j.client,jobs:[],total:0,totalPaid:0,hours:0,matTotal:0};
+    map[key].jobs.push(j);
+    if(j.pay!=='open'){map[key].totalPaid+=j.price;map[key].total+=j.price;}
+    map[key].hours+=j.hours||0;
+    map[key].matTotal+=j.matTotal||0;
+  });
+  let clients=Object.values(map).sort((a,b)=>b.totalPaid-a.totalPaid);
+  if(search)clients=clients.filter(c=>c.name.toLowerCase().includes(search));
+  const el=document.getElementById('clients-list');
+  if(!clients.length){el.innerHTML='<div class="empty">👥<p>אין לקוחות עדיין</p></div>';return;}
+  el.innerHTML=clients.map(c=>{
+    const avg=c.jobs.length>0?Math.round(c.totalPaid/Math.max(c.jobs.filter(j=>j.pay!=='open').length,1)):0;
+    const profit=c.totalPaid-c.matTotal;
+    return `<div class="client-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="client-name">${c.name}</div>
+          <div class="client-stats">
+            <div class="client-stat">🧵 <strong>${c.jobs.length}</strong> עבודות</div>
+            <div class="client-stat">⏱ <strong>${c.hours%1===0?c.hours:c.hours.toFixed(1)}</strong> שעות</div>
+            <div class="client-stat">📊 ממוצע <strong>₪${avg.toLocaleString()}</strong></div>
+            <div class="client-stat">💚 רווח <strong>₪${profit.toLocaleString()}</strong></div>
+          </div>
+        </div>
+        <div style="text-align:left">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:2px;">סך הכל שווי לקוחה</div>
+          <div class="client-total">₪${c.totalPaid.toLocaleString()}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* summary */
+function filterPeriod(arr){
+  const now=new Date();
+  return arr.filter(j=>{
+    if(period==='all')return true;
+    const ref=j.dateOut||j.dateIn;if(!ref)return false;
+    const d=new Date(ref);
+    if(period==='week'){const s=new Date(now);s.setDate(now.getDate()-now.getDay());s.setHours(0,0,0,0);return d>=s;}
+    return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
+  });
+}
+function setPeriod(p,btn){
+  period=p;
+  document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');renderSummary();
+}
+function renderSummary(){
+  const f=filterPeriod(jobs);
+  const paid=f.filter(j=>j.pay!=='open');
+  const income=paid.reduce((s,j)=>s+j.price,0);
+  const costs=f.reduce((s,j)=>s+(j.matTotal||0),0);
+  const profit=income-costs;
+  const hours=f.reduce((s,j)=>s+(j.hours||0),0);
+  const bit=f.filter(j=>j.pay==='bit').reduce((s,j)=>s+j.price,0);
+  const cash=f.filter(j=>j.pay==='cash').reduce((s,j)=>s+j.price,0);
+  const tot=bit+cash;
+  document.getElementById('s-income').textContent='₪'+income.toLocaleString();
+  document.getElementById('s-costs').textContent='₪'+costs.toLocaleString();
+  document.getElementById('s-profit').textContent='₪'+profit.toLocaleString();
+  document.getElementById('s-hours').textContent=hours%1===0?hours:hours.toFixed(1);
+  document.getElementById('s-done').textContent=paid.length;
+  document.getElementById('s-open').textContent=f.filter(j=>j.pay==='open').length;
+  document.getElementById('s-hourly').textContent=hours>0?'₪'+Math.round(profit/hours).toLocaleString():'₪0';
+  document.getElementById('s-bit').textContent='₪'+bit.toLocaleString();
+  document.getElementById('s-cash').textContent='₪'+cash.toLocaleString();
+  document.getElementById('s-bit-pct').textContent=tot>0?Math.round(bit/tot*100)+'% מסך הגביה':'';
+  document.getElementById('s-cash-pct').textContent=tot>0?Math.round(cash/tot*100)+'% מסך הגביה':'';
+  const days=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+  const cnt=[0,0,0,0,0,0,0];
+  f.forEach(j=>{const r=j.dateOut||j.dateIn;if(r)cnt[new Date(r).getDay()]++;});
+  const mx=Math.max(...cnt,1);
+  document.getElementById('days-chart').innerHTML=days.map((d,i)=>`
+    <div class="bar-row"><div class="bar-lbl">${d}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(cnt[i]/mx*100)}%"></div></div><div class="bar-num">${cnt[i]} עבודות</div></div>`).join('');
+}
+
+/* export CSV */
+function exportCSV(){
+  if(!jobs.length){toast('אין נתונים לייצוא','info');return;}
+  const header=['מספר עבודה','תאריך קבלה','תאריך מסירה','שם לקוחה','ביקור מספר','סוג עבודה','מחיר','סטטוס תשלום','שעות','עלות חומרים','רווח נטו','הערות'];
+  const rows=jobs.map((j,i)=>[
+    jobs.length-i,
+    j.dateIn||'',
+    j.dateOut||'',
+    j.client,
+    j.visitNum||1,
+    j.desc||'',
+    j.price,
+    j.pay==='open'?'טרם שולם':j.pay==='bit'?'ביט':'מזומן',
+    j.hours||0,
+    j.matTotal||0,
+    j.price-(j.matTotal||0),
+    j.notes||''
+  ]);
+  const csv='\uFEFF'+[header,...rows].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='הגזרה-שלי-'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  toast('✓ הקובץ הורד!');
+}
+
+/* import */
+function importData(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      /* try JSON first */
+      if(file.name.endsWith('.json')){
+        const imported=JSON.parse(ev.target.result);
+        if(Array.isArray(imported)){
+          if(!confirm(`נמצאו ${imported.length} עבודות. לייבא? (הנתונים הקיימים יישמרו)`))return;
+          /* merge - avoid duplicates by id */
+          const existingIds=new Set(jobs.map(j=>j.id));
+          const newJobs=imported.filter(j=>!existingIds.has(j.id));
+          jobs=[...jobs,...newJobs];
+          save();toast(`✓ יובאו ${newJobs.length} עבודות חדשות!`);
+        }
+      } else {
+        /* CSV - just notify, can't reliably parse Hebrew CSV back */
+        alert('לייבוא מלא השתמש בקובץ JSON. לייצוא JSON לחץ מחדש על "ייצא" ושמור עם סיומת .json');
+      }
+    }catch(err){alert('שגיאה בקריאת הקובץ');}
+    e.target.value='';
+  };
+  reader.readAsText(file,'UTF-8');
+}
+
+/* init */
+load();
+document.getElementById('f-date-in').value=new Date().toISOString().slice(0,10);
+</script>
+</body>
+</html>
